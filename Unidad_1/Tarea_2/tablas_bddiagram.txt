@@ -1,0 +1,111 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table cliente {
+  id_cliente int [primary key, increment]
+  dni_clientes varchar (50)
+  nombre_completo varchar
+  telefono_principal varchar
+  correo varchar
+}
+
+Table mascota {
+  id_mascota integer [primary key, increment]
+  nombre varchar [not null]
+  especie varchar
+  raza varchar
+  fecha_nacimiento date
+  id_cliente integer
+}
+
+Table veterinario {
+  id_veterinario integer [primary key]
+  id_cliente int [not null]
+  dni varchar (20) [not null, unique]
+  nombre varhcar (100) [not null]
+  especialidad varchar (100) [not null]
+  telefonico varchar (20) [not null]
+}
+
+Table cita {
+  id_cita integer [primary key]
+  fecha datetime [not null]
+  diagnostico varchar (50) [not null]
+  costo decimal (10,2) [not null]
+
+  id_mascota integer
+  id_veterinario integer
+}
+
+Table medicamento {
+  id_medicamento integer [primary key]
+  nombre_medicamento varchar
+  fabricante varchar
+  precio decimal
+}
+
+Table prescripcion_medica {
+  id_prescripcion integer [primary key]
+  cantidad varchar
+  indicaciones text
+  id_medicamento integer
+  id_cita integer
+}
+
+// nombre de la relacion: tabla.dato < tabl2.dato2
+REF: mascota.id_cliente > cliente.id_cliente
+REF: cita.id_veterinario > veterinario.id_veterinario
+REF: cita.id_mascota > mascota.id_mascota
+REF: medicamento.id_medicamento > prescripcion_medica.id_medicamento
+REF: cita.id_cita > prescripcion_medica.id_cita
+
+Records cliente (dni_clientes, nombre_completo, telefono_principal, correo) {
+  "100123456-0", "Juan Pérez", "555-1001", "juan.perez@email.com"
+  "20023456-1", "María González", "555-1002", "maria.gonzalez@email.com"
+  "30034567-2", "Carlos Ramírez", "555-1003", "carlos.ramirez@email.com"
+  "40045678-3", "Ana López", "555-1004", "ana.lopez@email.com"
+  "50056789-4", "Pedro Martínez", "555-1005", "pedro.martinez@email.com"
+}
+
+Records mascota (id_mascota, nombre, especie, raza, fecha_nacimiento, id_cliente) {
+  "1", "Max", "Perro", "Labrador", "2020-05-12", "50056789-4"
+  "2", "Luna", "Gato", "Siamés", "2021-08-20", "30034567-2"
+  "3", "Rocky", "Perro", "Bulldog" ,"2019-03-15", "100123456-0"
+  "4", "Nala", "Gato", "Persa", "2022-01-10", "20023456-1"
+  "5", "Toby", "Perro", "Beagle", "2020-11-25", "40045678-3"
+}
+
+Records veterinario (id_veterinario, dni, nombre, especialidad, telefonico) {
+  "1", "VET-001", "Dr. Roberto Sánchez", "Medicina interna", "555-2001"
+  "2", "VET-002", "Dra. Laura Torres", "Dermatología", "555-2002"
+  "3", "VET-003", "Dr. Miguel Herrera", "Cirugía", "555-003"
+  "4", "VET-004", "Dr. Sofía Castro", "Medicina felina", "555-004"
+  "5", "VET-005", "Dr. Daniel Ruiz", "Traumatología", "555-005"
+}
+
+Records cita (id_cita, fecha, diagnostico, id_mascota, id_veterinario) {
+  "1", "2026-09-01", "Infección de oído", "5", "1"
+  "2", "2026-09-01", "Dermatitis alérgica", "4", "5"
+  "3", "2026-09-02", "Dolor muscular", "3", "3"
+  "4", "2026-09-03", "Infección respiratoria", "2", "4" 
+  "5", "2026-09-04", "Lesión en pata delantera", "1", "2"
+}
+
+Records medicamento (id_medicamento, nombre_medicamento, fabricante, precio) {
+  "5", "AntibióticoVet", "BioPet", "$300"
+  "4", "RespiraVet", "FarmaAnimal", "$220"
+  "3", "DolorPet", "VetMed", "$150"
+  "2", "Dermacare", "AnimalPharma", "$250"
+  "1", "OticVet", "Laboratorios VetLab", "$180"
+}
+
+Records prescripcion_medica (id_prescripcion, cantidad, indicaciones, id_cita, id_medicamento) {
+  "1", "1", "Aplicar 2 gotas cada 8 horas por 7 días", "1", "1"
+  "2", "2", "Administrar 1 tableta cada 12 horas por 5 días", "2", "2"
+  "3", "1", "Administrar 1 tableta cada 24 horas por 5 días", "1", "1"
+  "4", "1", "Administrar 5 ml cada 8 horas por 7 días", "4", "4"
+  "5", "2", "Administrar 1 tableta cada 12 horas por 7 días", "5", "5"
+}
+
+
+

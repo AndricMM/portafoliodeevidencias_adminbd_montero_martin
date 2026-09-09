@@ -1,0 +1,43 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id_user integer [primary key]
+  nombre_user varchar
+  gmail_user varchar
+}
+
+Table libros {
+  id_libro integer [primary key]
+  titulo_libro varchar
+  autor_libro varchar
+}
+
+Table prestamos {
+  id_prestamos integer [primary key]
+  fecha_prestamo datetime
+  user_id integer
+  libro_id integer
+}
+
+// nombre de la relacion: tabla.dato < tabl2.dato2
+Ref user_prestamo: users.id_user < prestamos.user_id
+Ref libro_prestamo: libros.id_libro - prestamos.libro_id
+
+
+
+Records users(id_user, nombre_user, gmail_user) {
+  0, 'Ana Gómez', 'ana@email.com'
+  1, 'Carlos Ruíz', 'carlos@email.com'
+}
+
+Records libros(id_libro, titulo_libro, autor_libro) {
+  0, 'El principito', 'Antoine de Saint-Exupéry'
+  1, 'Cien Años de Soledad', 'Gabriel García Márquez'
+}
+
+Records prestamos(id_prestamos, fecha_prestamo) {
+  0, '2026-03-01'
+  1, '2026-03-02'
+  2, '2026-03-05'
+}
