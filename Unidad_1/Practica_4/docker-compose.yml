@@ -1,12 +1,12 @@
 services:
+
   mysql_db:
     build:
       context: .
-      dockerfile: Dockerfile
     container_name: mysql_local
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: my_db_cuentas
+      MYSQL_DATABASE: tienda_ecommerce
     ports:
       - "3306:3306"
     volumes:

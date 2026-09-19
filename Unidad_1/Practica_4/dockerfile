@@ -1,0 +1,14 @@
+﻿FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=mysql_ecommerce
+
+VOLUME [ "/var/lib/mysql" ]
+
+COPY creartablas.sql /docker-entrypoint-initdb.d/
+COPY transaccion.sql /docker-entrypoint-initdb.d/
+
+COPY rollback_pago.sql /scripts/
+COPY rollback_stock.sql /scripts/
+
+EXPOSE 3306

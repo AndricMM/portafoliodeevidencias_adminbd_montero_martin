@@ -1,0 +1,67 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table pagos {
+  id_pago int [pk, increment]
+  id_compra int [not null]
+  monto decimal(10,2) [not null]
+  metodo_pago varchar(30) [not null]
+  fecha_pago datetime [not null]
+}
+
+Table detalle_compra {
+  id_detalle int [pk, increment]
+  id_compra int [not null]
+  id_producto int [not null]
+  cantidad int [not null]
+  precio_unitario decimal(10,2) [not null]
+}
+
+Table compras {
+  id_compra int [pk, increment]
+  cliente varchar(100) [not null]
+  fecha datetime [not null]
+  estado varchar(20) [not null]
+}
+
+Table producto {
+  id_producto int [pk, increment]
+  nombre varchar(100) [not null]
+  precio decimal(10,2) [not null, note: 'CHECK (precio > 0)']
+  stock int [not null, note: 'CHECK (stock >= 0)']
+}
+
+
+// nombre de la relacion: tabla.dato < tabl2.dato2
+Ref detalle_compra: detalle_compra.id_compra > compras.id_compra
+Ref detalle_producto: detalle_compra.id_producto > producto.id_producto
+Ref pagos_compra: pagos.id_compra > compras.id_compra
+
+Records producto(id_producto, nombre, precio, stock) {
+  1, 'Laptop', 15000.00, 10
+  2, 'Mouse', 250.00, 5
+  3, 'Teclado', 600.00, 2
+  4, 'Monitor', 4500.00, 8
+  5, 'Audífonos', 800.00, 15
+}
+
+Records compras(id_compra, cliente, fecha, estado) {
+  1, 'Ana Torres', '2026-09-01 10:15:00', 'completada'
+  2, 'Luis Ramírez', '2026-09-03 14:30:00', 'completada'
+  3, 'María López', '2026-09-05 09:45:00', 'completada'
+}
+
+Records detalle_compra(id_detalle, id_compra, id_producto, cantidad, precio_unitario) {
+  1, 1, 1, 1, 15000.00
+  2, 2, 2, 2, 250.00
+  3, 2, 3, 1, 600.00
+  4, 3, 4, 1, 4500.00
+}
+
+Records pagos(id_pago, id_compra, monto, metodo_pago, fecha_pago) {
+  1, 1, 15000.00, 'tarjeta', '2026-09-01 10:16:00'
+  2, 2, 1100.00, 'efectivo', '2026-09-03 14:32:00'
+  3, 3, 4500.00, 'transferencia', '2026-09-05 09:47:00'
+}
+
+
